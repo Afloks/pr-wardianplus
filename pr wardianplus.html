@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WardianPlus – عرض تقديمي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&family=Tajawal:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --green: #29DB80;
+  --green-dark: #1fb86a;
+  --green-light: #29DB8022;
+  --green-glow: #29DB8044;
+  --black: #0a0a0a;
+  --black2: #141414;
+  --black3: #1e1e1e;
+  --white: #f5f5f5;
+  --gray: #888;
+  --gray2: #555;
+  --card: #161616;
+  --border: #2a2a2a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) var(--black);
+}
+
+body {
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--green); border-radius: 10px; }
+
+/* ===== شريط التنقل الجانبي ===== */
+.side-nav {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 8px;
+}
+
+.side-nav a {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gray2);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.side-nav a.active {
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green-glow);
+  transform: scale(1.4);
+}
+
+.side-nav a:hover {
+  background: var(--green);
+  transform: scale(1.3);
+}
+
+.side-nav a .tooltip {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--black3);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  border: 1px solid var(--border);
+}
+
+.side-nav a:hover .tooltip { opacity: 1; }
+
+/* ===== العداد العلوي ===== */
+.top-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  z-index: 999;
+  background: var(--black3);
+}
+
+.top-bar .progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), #29DB80aa);
+  width: 0%;
+  transition: width 0.3s;
+}
+
+/* ===== سلايد الشريحة ===== */
+.slide {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-inner {
+  max-width: 1200px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== عناصر الرسوم المتحركة ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(80px);
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-80px);
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.stagger-1 { transition-delay: 0.1s !important; }
+.stagger-2 { transition-delay: 0.2s !important; }
+.stagger-3 { transition-delay: 0.3s !important; }
+.stagger-4 { transition-delay: 0.4s !important; }
+.stagger-5 { transition-delay: 0.5s !important; }
+.stagger-6 { transition-delay: 0.6s !important; }
+.stagger-7 { transition-delay: 0.7s !important; }
+.stagger-8 { transition-delay: 0.8s !important; }
+
+/* ===== خلفيات متحركة ===== */
+.bg-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ===== الفصل ===== */
+.chapter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 30px;
+  background: var(--green-light);
+  border: 1px solid var(--green-glow);
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.chapter-badge i { font-size: 12px; }
+
+.slide-title {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.slide-title .highlight {
+  color: var(--green);
+  position: relative;
+}
+
+.slide-subtitle {
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--gray);
+  line-height: 1.8;
+  max-width: 700px;
+  font-weight: 300;
+}
+
+/* ===== اللوجو ===== */
+.logo-img {
+  height: 80px;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+.logo-img-large {
+  height: clamp(80px, 12vw, 140px);
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+.logo-text-brand {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 7vw, 72px);
+  color: var(--white);
+  letter-spacing: -1px;
+  display: inline-block;
+  position: relative;
+}
+
+.logo-text-brand .plus-word {
+  color: var(--white);
+  position: relative;
+}
+
+.logo-plus-icon {
+  position: absolute;
+  top: -14px;
+  left: -20px;
+  width: 22px;
+  height: 22px;
+  background: var(--green);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  font-size: 14px;
+  font-weight: 900;
+  animation: plusPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 16px var(--green-glow);
+}
+
+@keyframes plusPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ===== أسماء الطلاب ===== */
+.team-section {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.team-label {
+  font-size: 13px;
+  color: var(--gray);
+  font-weight: 600;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.team-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.team-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  transition: all 0.3s;
+}
+
+.team-name:hover {
+  border-color: var(--green-glow);
+  background: var(--green-light);
+}
+
+.team-name i {
+  color: var(--green);
+  font-size: 12px;
+}
+
+.team-name.supervisor {
+  border-color: var(--green-glow);
+  background: var(--green-light);
+}
+
+.team-name.supervisor i {
+  color: var(--green);
+}
+
+/* ===== البطاقات ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  border-color: var(--green-glow);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px var(--green-light);
+}
+
+.card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+/* ===== الجدول ===== */
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.compare-table thead {
+  background: var(--green);
+  color: var(--black);
+}
+
+.compare-table th {
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+}
+
+.compare-table td {
+  padding: 12px 18px;
+  font-size: 13px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  color: var(--white);
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table .wardian-row td {
+  background: var(--green-light);
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* ===== المخطط الانسيابي ===== */
+.flow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+
+.flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 110px;
+}
+
+.flow-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  font-size: 22px;
+  transition: all 0.5s;
+}
+
+.flow-step.active .flow-circle {
+  border-color: var(--green);
+  box-shadow: 0 0 20px var(--green-glow);
+  background: var(--green-light);
+}
+
+.flow-label {
+  font-size: 12px;
+  color: var(--gray);
+  font-weight: 600;
+  text-align: center;
+}
+
+.flow-arrow {
+  color: var(--green);
+  font-size: 20px;
+  margin: 0 4px;
+  animation: arrowPulse 2s infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.4; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(-4px); }
+}
+
+/* ===== تأثير الكتابة ===== */
+.typing-container {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.typing-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.typing-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.typing-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.typing-status {
+  font-size: 11px;
+  color: var(--green);
+}
+
+.typing-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--white);
+  min-height: 50px;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  background: var(--green);
+  vertical-align: middle;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ===== شاشات وهمية ===== */
+.mockup-frame {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+.mockup-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--black3);
+  border-bottom: 1px solid var(--border);
+}
+
+.mockup-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.mockup-dot.r { background: #ff5f57; }
+.mockup-dot.y { background: #ffbd2e; }
+.mockup-dot.g { background: #28c840; }
+
+.mockup-url {
+  flex: 1;
+  background: var(--black);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 11px;
+  color: var(--gray);
+  text-align: center;
+  margin: 0 8px;
+}
+
+.mockup-content {
+  padding: 0;
+  aspect-ratio: 16/10;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== الهوية البصرية ===== */
+.palette-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.palette-swatch {
+  flex: 1;
+  min-width: 100px;
+  height: 100px;
+  border-radius: 14px;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: transform 0.3s;
+}
+
+.palette-swatch:hover { transform: scale(1.05); }
+
+/* ===== الأيقونات التقنية ===== */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: all 0.4s;
+}
+
+.tech-item:hover {
+  border-color: var(--green);
+  transform: translateY(-4px);
+}
+
+.tech-item i {
+  font-size: 32px;
+  color: var(--green);
+}
+
+.tech-item span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+/* ===== الشريط المنفصل ===== */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 40px;
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ===== قائمة نقاط ===== */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bullet-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--white);
+  line-height: 1.7;
+}
+
+.bullet-list li i {
+  color: var(--green);
+  margin-top: 6px;
+  font-size: 10px;
+}
+
+/* ===== عداد أرقام ===== */
+.stat-number {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--gray);
+  margin-top: 8px;
+}
+
+/* ===== زر ===== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: var(--green);
+  color: var(--black);
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px var(--green-glow);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  background: var(--green-light);
+  transform: translateY(-2px);
+}
+
+/* ===== سهم التمرير المتحرك ===== */
+.scroll-arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--black);
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-arrow-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--green-dark);
+  transform: scale(0);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-arrow-btn:hover::before {
+  transform: scale(1);
+}
+
+.scroll-arrow-btn i {
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-arrow-btn.clicked {
+  animation: arrowBounceDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes arrowBounceDown {
+  0% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(12px) scale(0.9); }
+  60% { transform: translateY(-8px) scale(1.05); }
+  100% { transform: translateY(60px) scale(0.8); opacity: 0; }
+}
+
+.scroll-arrow-wrapper {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.scroll-hint {
+  font-size: 12px;
+  color: var(--gray);
+  text-align: center;
+  margin-top: 10px;
+  animation: hintFade 2s ease-in-out infinite;
+}
+
+@keyframes hintFade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ===== صفوف ===== */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .slide { padding: 60px 20px; }
+  .flow-container { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+  .side-nav { display: none; }
+  .team-names { flex-direction: column; align-items: center; }
+}
+
+/* ===== جزيئات عائمة ===== */
+.floating-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--green);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100px) scale(1); opacity: 0; }
+}
+
+/* ===== خط متحرك ===== */
+.line-anim {
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--green), transparent);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.line-anim.active { width: 80px; }
+
+/* ===== تأثير التكبير الخفيف ===== */
+.zoom-hover {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.zoom-hover:hover { transform: scale(1.03); }
+
+/* ===== شاشة وهمية داخلية ===== */
+.mock-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--black2);
+  border-bottom: 1px solid var(--border);
+}
+
+.mock-logo-text {
+  font-weight: 900;
+  font-size: 16px;
+  color: var(--green);
+}
+
+.mock-links {
+  display: flex;
+  gap: 16px;
+}
+
+.mock-links span {
+  font-size: 11px;
+  color: var(--gray);
+}
+
+.mock-hero-inner {
+  padding: 30px;
+  text-align: center;
+}
+
+.mock-hero-inner .mock-h1 {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  color: var(--white);
+}
+
+.mock-hero-inner .mock-p {
+  font-size: 11px;
+  color: var(--gray);
+  margin-bottom: 16px;
+}
+
+.mock-btn-sm {
+  display: inline-block;
+  padding: 8px 24px;
+  background: var(--green);
+  color: var(--black);
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mock-cards-row {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+
+.mock-card-mini {
+  flex: 1;
+  background: var(--black3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mock-card-img {
+  height: 60px;
+  background: var(--black2);
+}
+
+.mock-card-body {
+  padding: 8px 10px;
+}
+
+.mock-card-body .mc-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.mock-card-body .mc-price {
+  font-size: 9px;
+  color: var(--green);
+  margin-top: 4px;
+}
+
+.mock-card-body .mc-old {
+  text-decoration: line-through;
+  color: var(--gray);
+  font-size: 9px;
+  margin-right: 4px;
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--card);
+  border: 1px solid var(--green);
+  color: var(--white);
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast i { color: var(--green); }
+
+/* ===== نتيجة نهائية ===== */
+.final-gradient {
+  background: linear-gradient(135deg, var(--black) 0%, #0d2818 50%, var(--black) 100%);
+}
+
+/* ===== تاج ===== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tag-green {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.tag-gray {
+  background: var(--black3);
+  color: var(--gray);
+  border: 1px solid var(--border);
+}
+
+/* ===== QR Code ===== */
+.qr-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.qr-wrapper img {
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+}
+
+.qr-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  text-align: center;
+}
+
+.qr-link {
+  font-size: 11px;
+  color: var(--gray2);
+  direction: ltr;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* ===== انيميشن تمرير الصفحة ===== */
+body.is-scrolling {
+  pointer-events: none;
+}
+
+body.is-scrolling .slide {
+  transition: none;
+}
+</style>
+</head>
+<body>
+
+<!-- شريط التقدم العلوي -->
+<div class="top-bar"><div class="progress" id="progressBar"></div></div>
+
+<!-- التنقل الجانبي -->
+<nav class="side-nav" id="sideNav">
+  <a href="#title" class="active"><span class="tooltip">البداية</span></a>
+  <a href="#intro"><span class="tooltip">المقدمة</span></a>
+  <a href="#problem"><span class="tooltip">المشكلة</span></a>
+  <a href="#questions"><span class="tooltip">تساؤلات</span></a>
+  <a href="#objectives"><span class="tooltip">الأهداف</span></a>
+  <a href="#importance"><span class="tooltip">الأهمية</span></a>
+  <a href="#prev-studies"><span class="tooltip">الدراسات</span></a>
+  <a href="#comparison"><span class="tooltip">المقارنة</span></a>
+  <a href="#system-idea"><span class="tooltip">فكرة النظام</span></a>
+  <a href="#features"><span class="tooltip">المميزات</span></a>
+  <a href="#flowchart"><span class="tooltip">المخطط</span></a>
+  <a href="#ui-design"><span class="tooltip">تصميم UI</span></a>
+  <a href="#technologies"><span class="tooltip">التقنيات</span></a>
+  <a href="#chatbot"><span class="tooltip">المساعد الذكي</span></a>
+  <a href="#testing"><span class="tooltip">الاختبار</span></a>
+  <a href="#results"><span class="tooltip">النتائج</span></a>
+  <a href="#identity"><span class="tooltip">الهوية البصرية</span></a>
+  <a href="#final"><span class="tooltip">الخاتمة</span></a>
+</nav>
+
+<!-- ===================== شريحة العنوان ===================== -->
+<section class="slide" id="title" style="min-height:100vh;position:relative;">
+  <div class="bg-grid"></div>
+  <div class="bg-glow" style="background:var(--green);top:-200px;right:-100px;"></div>
+  <div class="bg-glow" style="background:#29DB80;bottom:-200px;left:-100px;opacity:0.08;"></div>
+  <div id="particles"></div>
+
+  <!-- سهم التمرير -->
+  <div class="scroll-arrow-wrapper">
+    <button class="scroll-arrow-btn" id="scrollArrowBtn" aria-label="الصفحة التالية">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="scroll-hint">اضغط للانتقال</div>
+  </div>
+
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal stagger-1">
+      <span class="tag tag-green" style="margin-bottom:24px;font-size:13px;padding:6px 18px;">
+        <i class="fas fa-graduation-cap"></i> مشروع تخرج
+      </span>
+    </div>
+    <div class="reveal stagger-2">
+      <img src="https://z-cdn-media.chatglm.cn/files/7e852672-d955-4f05-a28d-0e8da5e27f03.jpg?auth_key=1877944747-cc3fdc46f99d4bb8a748c0d1f3420d1f-0-691447bcf88f9c394924a2f7a3f38089" alt="WardianPlus Logo" class="logo-img-large" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='inline-block';">
+      <div id="logoFallback" style="display:none;">
+        <span class="logo-text-brand">Wardian<span class="plus-word">Plus<span class="logo-plus-icon">+</span></span></span>
+      </div>
+    </div>
+    <div class="reveal stagger-3">
+      <p style="font-size:clamp(18px,3vw,28px);color:var(--gray);font-weight:300;margin-top:16px;">
+        منصة العروض والخصومات الذكية
+      </p>
+    </div>
+    <div class="reveal stagger-4" style="margin-top:16px;display:flex;gap:40px;justify-content:center;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div class="stat-number" data-target="5">0</div>
+        <div class="stat-label">فصول</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="stat-number" data-target="12">0</div>
+        <div class="stat-label">ميزة</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="stat-number" data-target="1">0</div>
+        <div class="stat-label">نموذج يعمل</div>
+      </div>
+    </div>
+
+    <!-- أسماء الفريق -->
+    <div class="reveal stagger-5">
+      <div class="team-section">
+        <div class="team-label">فريق العمل</div>
+        <div class="team-names">
+          <div class="team-name"><i class="fas fa-user-graduate"></i> أحمد جابر بدور</div>
+          <div class="team-name"><i class="fas fa-user-graduate"></i> ولاء حسين محمود</div>
+          <div class="team-name supervisor"><i class="fas fa-chalkboard-teacher"></i> إشراف: د. هاجر يحيي</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المقدمة ===================== -->
+<section class="slide" id="intro">
+  <div class="bg-dots"></div>
+  <div class="bg-glow" style="background:var(--green);top:50%;left:-200px;transform:translateY(-50%);"></div>
+  <div class="slide-inner">
+    <div class="grid-2" style="align-items:center;">
+      <div>
+        <div class="reveal"><span class="chapter-badge"><i class="fas fa-book-open"></i> الفصل الأول</span></div>
+        <div class="reveal stagger-1"><h2 class="slide-title">المقدمة <span class="highlight">والإطار العام</span></h2></div>
+        <div class="reveal stagger-2"><div class="line-anim" style="margin-bottom:20px;"></div></div>
+        <div class="reveal stagger-3"><p class="slide-subtitle">يشهد سوق التجارة الإلكترونية نمواً متسارعاً، لكن المستخدمين لا يزالون يواجهون صعوبة في العثور على العروض والخصومات المناسبة لهم بشكل منظم وسريع.</p></div>
+        <div class="reveal stagger-4" style="margin-top:24px;">
+          <ul class="bullet-list">
+            <li><i class="fas fa-circle"></i> انتشار العروض بشكل عشوائي عبر منصات متفرقة</li>
+            <li><i class="fas fa-circle"></i> ضعف الوعي بتقنيات تنظيم الخصومات</li>
+            <li><i class="fas fa-circle"></i> دور التكنولوجيا في حل المشكلة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal-left stagger-3">
+        <div class="card" style="text-align:center;padding:40px;">
+          <div style="margin-bottom:16px;">
+            <img src="https://z-cdn-media.chatglm.cn/files/7e852672-d955-4f05-a28d-0e8da5e27f03.jpg?auth_key=1877944747-cc3fdc46f99d4bb8a748c0d1f3420d1f-0-691447bcf88f9c394924a2f7a3f38089" alt="WardianPlus" class="logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+            <span class="logo-text-brand" style="display:none;font-size:28px;">Wardian<span class="plus-word">Plus<span class="logo-plus-icon" style="width:16px;height:16px;font-size:10px;top:-10px;left:-14px;">+</span></span></span>
+          </div>
+          <h3 style="font-size:20px;">التجارة الذكية</h3>
+          <p style="margin-top:8px;">ربط المستخدم بالمتاجر بأذكى طريقة ممكنة</p>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+            <span class="tag tag-green">خصومات</span>
+            <span class="tag tag-green">كاشباك</span>
+            <span class="tag tag-green">ذكاء اصطناعي</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المشكلة ===================== -->
+<section class="slide" id="problem">
+  <div class="bg-grid"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><span class="chapter-badge"><i class="fas fa-exclamation-triangle"></i> المشكلة البحثية</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">لماذا <span class="highlight">WardianPlus</span>؟</h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin:0 auto 40px;"></div></div>
+    <div class="grid-3">
+      <div class="reveal stagger-2">
+        <div class="card" style="border-top:3px solid #ff4d4d;">
+          <div class="card-icon" style="background:#ff4d4d22;color:#ff4d4d;"><i class="fas fa-user-slash"></i></div>
+          <h3>صعوبة اكتشاف العروض</h3>
+          <p>المستخدم يقضي وقتاً طويلاً في البحث عن عروض حقيقية بين كم هائل من المحتوى غير المنظم</p>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card" style="border-top:3px solid #ffaa00;">
+          <div class="card-icon" style="background:#ffaa0022;color:#ffaa00;"><i class="fas fa-store-slash"></i></div>
+          <h3>ضعف وصول المتاجر</h3>
+          <p>المتاجر الصغيرة والمتوسطة لا تجد منصة فعالة للوصول إلى العملاء المحتملين</p>
+        </div>
+      </div>
+      <div class="reveal stagger-4">
+        <div class="card" style="border-top:3px solid #ff4d4d;">
+          <div class="card-icon" style="background:#ff4d4d22;color:#ff4d4d;"><i class="fas fa-link-slash"></i></div>
+          <h3>غياب المنصة الموحدة</h3>
+          <p>لا توجد منصة واحدة تجمع العروض من مصادر متعددة بشكل منظم وموثوق</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== تساؤلات البحث ===================== -->
+<section class="slide" id="questions">
+  <div class="bg-dots"></div>
+  <div class="bg-glow" style="background:var(--green);bottom:-200px;right:-100px;"></div>
+  <div class="slide-inner">
+    <div class="reveal"><span class="chapter-badge"><i class="fas fa-question-circle"></i> تساؤلات البحث</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">ما الذي نسعى <span class="highlight">للإجابة عنه</span>؟</h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin-bottom:40px;"></div></div>
+    <div class="grid-2">
+      <div class="reveal stagger-2">
+        <div class="card" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:20px;left:20px;font-size:60px;font-weight:900;color:var(--green-light);">01</div>
+          <div style="position:relative;z-index:1;">
+            <h3>التساؤل الرئيسي</h3>
+            <p style="margin-top:12px;font-size:16px;color:var(--white);line-height:1.9;">كيف يمكن تصميم وبناء منصة إلكترونية ذكية تسهل على المستخدمين الوصول إلى العروض والخصومات وتربطهم بالمتاجر المحلية بشكل فعال؟</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:20px;left:20px;font-size:60px;font-weight:900;color:var(--green-light);">02</div>
+          <div style="position:relative;z-index:1;">
+            <h3>التساؤلات الفرعية</h3>
+            <ul class="bullet-list" style="margin-top:12px;">
+              <li><i class="fas fa-circle"></i> ما هي المتطلبات الوظيفية وغير الوظيفية للمنصة؟</li>
+              <li><i class="fas fa-circle"></i> كيف يتم تصميم واجهة مستخدم بسيطة وفعالة؟</li>
+              <li><i class="fas fa-circle"></i> ما هي التقنيات المناسبة لبناء النموذج الأولي؟</li>
+              <li><i class="fas fa-circle"></i> كيف يمكن قياس رضا المستخدم عن المنصة؟</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الأهداف ===================== -->
+<section class="slide" id="objectives">
+  <div class="bg-grid"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><span class="chapter-badge"><i class="fas fa-bullseye"></i> أهداف المشروع</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">ماذا نريد أن <span class="highlight">نحقق</span>؟</h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin:0 auto 40px;"></div></div>
+    <div class="grid-4">
+      <div class="reveal stagger-1">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-laptop-code"></i></div>
+          <h3>بناء المنصة</h3>
+          <p>تصميم وبناء نموذج أولي لكامل واجهة المستخدم</p>
+        </div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-heart"></i></div>
+          <h3>تحسين التجربة</h3>
+          <p>توفير تجربة استخدام سلسة وبديهية لجميع الفئات</p>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-link"></i></div>
+          <h3>الربط الفعال</h3>
+          <p>ربط المستهلكين بالمتاجر بشكل مباشر ومنظم</p>
+        </div>
+      </div>
+      <div class="reveal stagger-4">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-robot"></i></div>
+          <h3>المساعد الذكي</h3>
+          <p>توفير مساعد ذكي يساعد المستخدم في البحث عن العروض</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الأهمية ===================== -->
+<section class="slide" id="importance">
+  <div class="bg-dots"></div>
+  <div class="bg-glow" style="background:var(--green);top:-100px;left:50%;transform:translateX(-50%);"></div>
+  <div class="slide-inner">
+    <div class="reveal"><span class="chapter-badge"><i class="fas fa-star"></i> أهمية المشروع</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">لماذا هذا المشروع <span class="highlight">مهم</span>؟</h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin-bottom:40px;"></div></div>
+    <div class="grid-2" style="gap:32px;">
+      <div class="reveal stagger-2">
+        <div class="card" style="border-right:3px solid var(--green);height:100%;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <span class="tag tag-green">علمية</span>
+          </div>
+          <ul class="bullet-list">
+            <li><i class="fas fa-circle"></i> المساهمة في الأدب البحثي لمنصات الخصومات</li>
+            <li><i class="fas fa-circle"></i> تقديم نموذج تصميمي قابل للتطوير</li>
+            <li><i class="fas fa-circle"></i> اختبار فعالية الذكاء الاصطناعي في التجارة</li>
+            <li><i class="fas fa-circle"></i> تحديد أفضل الممارسات في تصميم واجهات العروض</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card" style="border-right:3px solid var(--green);height:100%;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <span class="tag tag-green">عملية</span>
+          </div>
+          <ul class="bullet-list">
+            <li><i class="fas fa-circle"></i> مساعدة المستخدمين في توفير المال</li>
+            <li><i class="fas fa-circle"></i> زيادة مبيعات المتاجر المحلية</li>
+            <li><i class="fas fa-circle"></i> توفير منصة عربية بسيطة وفعالة</li>
+            <li><i class="fas fa-circle"></i> دعم الاقتصاد المحلي الرقمي</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===================== الدراسات السابقة ===================== -->
+<section class="slide" id="prev-studies">
+  <div class="bg-grid"></div>
+  <div class="slide-inner">
+    <div class="reveal"><span class="chapter-badge" style="background:#6366f122;border-color:#6366f144;color:#818cf8;"><i class="fas fa-flask"></i> الفصل الثاني</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">الدراسات <span style="color:#818cf8;">السابقة</span></h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin-bottom:40px;background:linear-gradient(90deg,#818cf8,transparent);"></div></div>
+    <div class="grid-3">
+      <div class="reveal stagger-1">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:#ff4d4d22;display:flex;align-items:center;justify-content:center;color:#ff4d4d;font-weight:900;font-size:14px;">G</div>
+            <h3>Groupon</h3>
+          </div>
+          <p>منصة عالمية للعروض والخصومات مع نموذج شراء مسبق للقسائم</p>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-green">قوي</span>
+            <span class="tag tag-gray">معقد</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:#ff990022;display:flex;align-items:center;justify-content:center;color:#ff9900;font-weight:900;font-size:14px;">C</div>
+            <h3>Coupon.com</h3>
+          </div>
+          <p>موقع كوبونات يركز على العروض الأمريكية مع نظام تصنيف متقدم</p>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-green">تنوع</span>
+            <span class="tag tag-gray">غير عربي</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:#29DB8022;display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:900;font-size:14px;">N</div>
+            <h3>Noon Deals</h3>
+          </div>
+          <p>قسم العروض في منصة نون مع خصومات موسمية وتخفيضات حصرية</p>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-green">عربي</span>
+            <span class="tag tag-gray">متجر فقط</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-4">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:#e91e6322;display:flex;align-items:center;justify-content:center;color:#e91e63;font-weight:900;font-size:14px;">T</div>
+            <h3>Tomthumb</h3>
+          </div>
+          <p>منصة تجمع عروض المتاجر المحلية مع إمكانية البحث الجغرافي</p>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-green">محلي</span>
+            <span class="tag tag-gray">محدود</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-5">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:#00bcd422;display:flex;align-items:center;justify-content:center;color:#00bcd4;font-weight:900;font-size:14px;">R</div>
+            <h3>Rakuten</h3>
+          </div>
+          <p>منصة كاشباك عالمية تتيح استرداد نسبة من المشتريات</p>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-green">كاشباك</span>
+            <span class="tag tag-gray">غير محلي</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-6">
+        <div class="card" style="border-color:var(--green-glow);background:var(--green-light);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;color:var(--black);font-weight:900;font-size:14px;">W</div>
+            <h3 style="color:var(--green);">WardianPlus</h3>
+          </div>
+          <p style="color:var(--white);">يجمع كل المميزات في منصة عربية واحدة بسيطة مع مساعد ذكي</p>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-green">شامل</span>
+            <span class="tag tag-green">ذكي</span>
+            <span class="tag tag-green">عربي</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== جدول المقارنة ===================== -->
+<section class="slide" id="comparison">
+  <div class="bg-dots"></div>
+  <div class="slide-inner">
+    <div class="reveal"><h2 class="slide-title" style="text-align:center;">جدول <span class="highlight">المقارنة</span></h2></div>
+    <div class="reveal stagger-1"><div class="line-anim" style="margin:0 auto 30px;"></div></div>
+    <div class="reveal-scale stagger-2" style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>الميزة</th>
+            <th>Groupon</th>
+            <th>Noon</th>
+            <th>Rakuten</th>
+            <th>WardianPlus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>واجهة عربية بسيطة</td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+          </tr>
+          <tr>
+            <td>مساعد ذكي (AI)</td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+          </tr>
+          <tr>
+            <td>نظام نقاط وكاشباك</td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+          </tr>
+          <tr>
+            <td>لوحة تحكم التاجر</td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+            <td><i class="fas fa-times" style="color:#ff4d4d;"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+          </tr>
+          <tr>
+            <td>بساطة الاستخدام</td>
+            <td><i class="fas fa-minus" style="color:#ffaa00;"></i></td>
+            <td><i class="fas fa-minus" style="color:#ffaa00;"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+            <td><i class="fas fa-check" style="color:var(--green);"></i></td>
+          </tr>
+          <tr class="wardian-row">
+            <td>التفوق الكلي</td>
+            <td>60%</td>
+            <td>70%</td>
+            <td>55%</td>
+            <td>95%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===================== فكرة النظام ===================== -->
+<section class="slide" id="system-idea" style="background:linear-gradient(180deg,var(--black) 0%,#091a10 50%,var(--black) 100%);">
+  <div class="bg-grid"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><span class="chapter-badge" style="background:#f59e0b22;border-color:#f59e0b44;color:#fbbf24;"><i class="fas fa-cogs"></i> الفصل الثالث</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">فكرة <span style="color:#fbbf24;">النظام</span></h2></div>
+    <div class="reveal stagger-2"><p class="slide-subtitle" style="margin:0 auto;">موقع إلكتروني يجمع العروض والخصومات من المتاجر المختلفة ويقدمها للمستخدمين بطريقة ذكية ومنظمة</p></div>
+    <div class="reveal stagger-3"><div class="line-anim" style="margin:30px auto;background:linear-gradient(90deg,#fbbf24,transparent);"></div></div>
+    <div class="grid-2" style="max-width:800px;margin:0 auto;">
+      <div class="reveal stagger-3">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:50px;margin-bottom:12px;"><i class="fas fa-users" style="color:#fbbf24;"></i></div>
+          <h3>المستخدمون</h3>
+          <p>الأشخاص الذين يبحثون عن عروض وخصومات ويرغبون في توفير المال</p>
+        </div>
+      </div>
+      <div class="reveal stagger-4">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:50px;margin-bottom:12px;"><i class="fas fa-store" style="color:#fbbf24;"></i></div>
+          <h3>التجار</h3>
+          <p>أصحاب المتاجر الذين يريدون زيادة مبيعاتهم والوصول لعملاء جدد</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== مميزات النظام ===================== -->
+<section class="slide" id="features">
+  <div class="bg-dots"></div>
+  <div class="bg-glow" style="background:var(--green);top:50%;right:-200px;transform:translateY(-50%);"></div>
+  <div class="slide-inner">
+    <div class="reveal"><h2 class="slide-title">مميزات <span class="highlight">النظام</span></h2></div>
+    <div class="reveal stagger-1"><div class="line-anim" style="margin-bottom:32px;"></div></div>
+    <div class="grid-3">
+      <div class="reveal stagger-1">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-sign-in-alt"></i></div>
+          <h3>تسجيل الدخول</h3>
+          <p>نظام تسجيل وتسجيل دخول سهل مع إمكانية الدخول كمستخدم أو تاجر</p>
+        </div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-user-circle"></i></div>
+          <h3>الملف الشخصي</h3>
+          <p>إدارة بيانات المستخدم ومتابعة النقاط والمكافآت</p>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
+          <h3>لوحة تحكم التاجر</h3>
+          <p>إدارة العروض ومتابعة الأداء والإحصائيات بشكل مباشر</p>
+        </div>
+      </div>
+      <div class="reveal stagger-4">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-plus-circle"></i></div>
+          <h3>إضافة العروض</h3>
+          <p>إمكانية إضافة وتعديل وحذف العروض مع تحديد المدة والخصم</p>
+        </div>
+      </div>
+      <div class="reveal stagger-5">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-coins"></i></div>
+          <h3>نظام النقاط</h3>
+          <p>كسب نقاط مع كل عملية شراء واستبدالها بخصومات أو كاشباك</p>
+        </div>
+      </div>
+      <div class="reveal stagger-6">
+        <div class="card" style="border-color:var(--green-glow);">
+          <div class="card-icon" style="background:var(--green);color:var(--black);"><i class="fas fa-robot"></i></div>
+          <h3 style="color:var(--green);">المساعد الذكي</h3>
+          <p>شات بوت يعمل بالذكاء الاصطناعي لمساعدة المستخدم في البحث عن العروض</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المخطط الانسيابي ===================== -->
+<section class="slide" id="flowchart">
+  <div class="bg-grid"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><h2 class="slide-title">رحلة <span class="highlight">المستخدم</span></h2></div>
+    <div class="reveal stagger-1"><div class="line-anim" style="margin:0 auto 40px;"></div></div>
+    <div class="reveal-scale stagger-2">
+      <div class="flow-container" id="flowContainer">
+        <div class="flow-step active">
+          <div class="flow-circle"><i class="fas fa-home"></i></div>
+          <div class="flow-label">الصفحة الرئيسية</div>
+        </div>
+        <div class="flow-arrow"><i class="fas fa-arrow-left"></i></div>
+        <div class="flow-step">
+          <div class="flow-circle"><i class="fas fa-search"></i></div>
+          <div class="flow-label">تصفح العروض</div>
+        </div>
+        <div class="flow-arrow"><i class="fas fa-arrow-left"></i></div>
+        <div class="flow-step">
+          <div class="flow-circle"><i class="fas fa-eye"></i></div>
+          <div class="flow-label">عرض التفاصيل</div>
+        </div>
+        <div class="flow-arrow"><i class="fas fa-arrow-left"></i></div>
+        <div class="flow-step">
+          <div class="flow-circle"><i class="fas fa-sign-in-alt"></i></div>
+          <div class="flow-label">تسجيل الدخول</div>
+        </div>
+        <div class="flow-arrow"><i class="fas fa-arrow-left"></i></div>
+        <div class="flow-step">
+          <div class="flow-circle"><i class="fas fa-shopping-cart"></i></div>
+          <div class="flow-label">استخدام العرض</div>
+        </div>
+        <div class="flow-arrow"><i class="fas fa-arrow-left"></i></div>
+        <div class="flow-step">
+          <div class="flow-circle"><i class="fas fa-star"></i></div>
+          <div class="flow-label">كسب النقاط</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal stagger-3" style="margin-top:30px;">
+      <p class="slide-subtitle" style="margin:0 auto;text-align:center;">رحلة سلسة من الاكتشاف حتى الاستفادة — كل خطوة مصممة لتكون بسيطة وسريعة</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== تصميم الواجهة ===================== -->
+<section class="slide" id="ui-design">
+  <div class="bg-dots"></div>
+  <div class="slide-inner">
+    <div class="grid-2" style="align-items:center;">
+      <div>
+        <div class="reveal"><h2 class="slide-title">تصميم <span class="highlight">الواجهة</span></h2></div>
+        <div class="reveal stagger-1"><div class="line-anim" style="margin-bottom:20px;"></div></div>
+        <div class="reveal stagger-2"><p class="slide-subtitle">واجهة مستخدم حديثة وبسيطة مصممة بأدوات Adobe XD مع التركيز على سهولة الاستخدام والجمال البصري</p></div>
+        <div class="reveal stagger-3" style="margin-top:24px;">
+          <ul class="bullet-list">
+            <li><i class="fas fa-circle"></i> تصميم RTL كامل للعربية</li>
+            <li><i class="fas fa-circle"></i> ألوان هادئة مريحة للعين</li>
+            <li><i class="fas fa-circle"></i> بطاقات مستديرة بظلال ناعمة</li>
+            <li><i class="fas fa-circle"></i> تجاوب كامل مع جميع الشاشات</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal-left stagger-2">
+        <div class="mockup-frame zoom-hover">
+          <div class="mockup-topbar">
+            <div class="mockup-dot r"></div>
+            <div class="mockup-dot y"></div>
+            <div class="mockup-dot g"></div>
+            <div class="mockup-url">wardianplus-coder.github.io/wardian-plus</div>
+          </div>
+          <div class="mockup-content">
+            <div class="mock-nav">
+              <div class="mock-logo-text">WardianPlus</div>
+              <div class="mock-links">
+                <span>الرئيسية</span>
+                <span>العروض</span>
+                <span>التصنيفات</span>
+                <span style="color:var(--green);">تسجيل</span>
+              </div>
+            </div>
+            <div class="mock-hero-inner">
+              <div class="mock-h1">اكتشف أفضل العروض</div>
+              <div class="mock-p">وفر حتى 70% على مئات المتاجر</div>
+              <div class="mock-btn-sm">تصفح العروض</div>
+            </div>
+            <div class="mock-cards-row">
+              <div class="mock-card-mini">
+                <div class="mock-card-img" style="background:linear-gradient(135deg,#1a3a2a,#0d1f15);display:flex;align-items:center;justify-content:center;">
+                  <i class="fas fa-laptop" style="color:var(--green);font-size:20px;opacity:0.5;"></i>
+                </div>
+                <div class="mock-card-body">
+                  <div class="mc-title">لابتوب</div>
+                  <div class="mc-price"><span class="mc-old">3000</span> 2100 ر.س</div>
+                </div>
+              </div>
+              <div class="mock-card-mini">
+                <div class="mock-card-img" style="background:linear-gradient(135deg,#1a2a3a,#0d151f);display:flex;align-items:center;justify-content:center;">
+                  <i class="fas fa-mobile-alt" style="color:#60a5fa;font-size:20px;opacity:0.5;"></i>
+                </div>
+                <div class="mock-card-body">
+                  <div class="mc-title">هاتف</div>
+                  <div class="mc-price"><span class="mc-old">2500</span> 1800 ر.س</div>
+                </div>
+              </div>
+              <div class="mock-card-mini">
+                <div class="mock-card-img" style="background:linear-gradient(135deg,#3a1a2a,#1f0d15);display:flex;align-items:center;justify-content:center;">
+                  <i class="fas fa-headphones" style="color:#f472b6;font-size:20px;opacity:0.5;"></i>
+                </div>
+                <div class="mock-card-body">
+                  <div class="mc-title">سماعات</div>
+                  <div class="mc-price"><span class="mc-old">800</span> 450 ر.س</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== التقنيات ===================== -->
+<section class="slide" id="technologies">
+  <div class="bg-grid"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><h2 class="slide-title">التقنيات <span class="highlight">المستخدمة</span></h2></div>
+    <div class="reveal stagger-1"><div class="line-anim" style="margin:0 auto 40px;"></div></div>
+    <div class="reveal stagger-2">
+      <div class="tech-grid" style="max-width:800px;margin:0 auto;">
+        <div class="tech-item">
+          <i class="fab fa-html5"></i>
+          <span>HTML5</span>
+        </div>
+        <div class="tech-item">
+          <i class="fab fa-css3-alt"></i>
+          <span>CSS3</span>
+        </div>
+        <div class="tech-item">
+          <i class="fab fa-js-square"></i>
+          <span>JavaScript</span>
+        </div>
+        <div class="tech-item">
+          <i class="fas fa-pen-nib"></i>
+          <span>Adobe XD</span>
+        </div>
+        <div class="tech-item">
+          <i class="fas fa-image"></i>
+          <span>Figma</span>
+        </div>
+        <div class="tech-item">
+          <i class="fab fa-font-awesome"></i>
+          <span>Font Awesome</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal stagger-3" style="margin-top:40px;">
+      <div class="card" style="max-width:600px;margin:0 auto;text-align:center;">
+        <span class="tag tag-gray" style="margin-bottom:12px;">ملاحظة</span>
+        <p>المشروع الحالي هو <strong style="color:var(--green);">نموذج أولي للواجهة الأمامية (Frontend Prototype)</strong> فقط، مع تخطيط مسبق لإضافة قاعدة البيانات والخادم في المراحل القادمة</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المساعد الذكي ===================== -->
+<section class="slide" id="chatbot">
+  <div class="bg-dots"></div>
+  <div class="bg-glow" style="background:var(--green);bottom:-200px;left:50%;transform:translateX(-50%);"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><h2 class="slide-title">المساعد <span class="highlight">الذكي</span></h2></div>
+    <div class="reveal stagger-1"><p class="slide-subtitle" style="margin:0 auto;">شات بوت مدمج في المنصة يساعد المستخدمين في العثور على أفضل العروض</p></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin:20px auto 40px;"></div></div>
+    <div class="reveal-scale stagger-3">
+      <div class="typing-container">
+        <div class="typing-header">
+          <div class="typing-avatar">W</div>
+          <div>
+            <div class="typing-name">Wardian Bot</div>
+            <div class="typing-status"><i class="fas fa-circle" style="font-size:6px;"></i> متصل الآن</div>
+          </div>
+        </div>
+        <div class="typing-text" id="typingText"></div>
+      </div>
+    </div>
+    <div class="reveal stagger-4" style="margin-top:30px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <span class="tag tag-green"><i class="fas fa-bolt"></i> ردود فورية</span>
+      <span class="tag tag-green"><i class="fas fa-brain"></i> فهم السياق</span>
+      <span class="tag tag-green"><i class="fas fa-search"></i> بحث ذكي</span>
+      <span class="tag tag-green"><i class="fas fa-language"></i> عربي طبيعي</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الاختبار ===================== -->
+<section class="slide" id="testing">
+  <div class="bg-grid"></div>
+  <div class="slide-inner">
+    <div class="reveal"><h2 class="slide-title">اختبار <span class="highlight">النظام</span></h2></div>
+    <div class="reveal stagger-1"><div class="line-anim" style="margin-bottom:32px;"></div></div>
+    <div class="grid-3">
+      <div class="reveal stagger-1">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-compass"></i></div>
+          <h3>اختبار التنقل</h3>
+          <p>التحقق من سهولة التنقل بين الصفحات والوصول لجميع الأقسام</p>
+          <div style="margin-top:16px;">
+            <div style="background:var(--black);border-radius:8px;height:8px;overflow:hidden;">
+              <div class="test-bar" data-width="95" style="width:0%;height:100%;background:var(--green);border-radius:8px;transition:width 1.5s cubic-bezier(0.16,1,0.3,1);"></div>
+            </div>
+            <span style="font-size:12px;color:var(--green);font-weight:700;margin-top:6px;display:block;">95%</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-tachometer-alt"></i></div>
+          <h3>اختبار الأداء</h3>
+          <p>قياس سرعة تحميل الصفحات والاستجابة التفاعلية للواجهة</p>
+          <div style="margin-top:16px;">
+            <div style="background:var(--black);border-radius:8px;height:8px;overflow:hidden;">
+              <div class="test-bar" data-width="90" style="width:0%;height:100%;background:var(--green);border-radius:8px;transition:width 1.5s cubic-bezier(0.16,1,0.3,1);transition-delay:0.2s;"></div>
+            </div>
+            <span style="font-size:12px;color:var(--green);font-weight:700;margin-top:6px;display:block;">90%</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon" style="margin:0 auto 16px;"><i class="fas fa-mobile-alt"></i></div>
+          <h3>اختبار التجاوب</h3>
+          <p>التأكد من عمل المنصة على مختلف أحجام الشاشات والأجهزة</p>
+          <div style="margin-top:16px;">
+            <div style="background:var(--black);border-radius:8px;height:8px;overflow:hidden;">
+              <div class="test-bar" data-width="92" style="width:0%;height:100%;background:var(--green);border-radius:8px;transition:width 1.5s cubic-bezier(0.16,1,0.3,1);transition-delay:0.4s;"></div>
+            </div>
+            <span style="font-size:12px;color:var(--green);font-weight:700;margin-top:6px;display:block;">92%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===================== النتائج ===================== -->
+<section class="slide" id="results">
+  <div class="bg-dots"></div>
+  <div class="bg-glow" style="background:var(--green);top:-100px;right:-200px;"></div>
+  <div class="slide-inner">
+    <div class="reveal"><span class="chapter-badge" style="background:#ef444422;border-color:#ef444444;color:#f87171;"><i class="fas fa-flag-checkered"></i> الفصل الرابع</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">النتائج <span style="color:#f87171;">والتوصيات</span></h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin-bottom:32px;background:linear-gradient(90deg,#f87171,transparent);"></div></div>
+    <div class="grid-2" style="gap:32px;">
+      <div class="reveal stagger-2">
+        <div class="card" style="border-top:3px solid var(--green);height:100%;">
+          <h3 style="color:var(--green);margin-bottom:16px;"><i class="fas fa-check-circle" style="margin-left:8px;"></i> النتائج</h3>
+          <ul class="bullet-list">
+            <li><i class="fas fa-circle"></i> بناء نموذج أولي يعمل بالكامل للواجهة الأمامية</li>
+            <li><i class="fas fa-circle"></i> تصميم واجهة مستخدم بسيطة وجذابة</li>
+            <li><i class="fas fa-circle"></i> تطبيق مساعد ذكي يفهم استفسارات المستخدم</li>
+            <li><i class="fas fa-circle"></i> تصميم لوحة تحكم متكاملة للتاجر</li>
+            <li><i class="fas fa-circle"></i> نتائج اختبار إيجابية تفوق 90%</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal stagger-3">
+        <div class="card" style="border-top:3px solid #fbbf24;height:100%;">
+          <h3 style="color:#fbbf24;margin-bottom:16px;"><i class="fas fa-lightbulb" style="margin-left:8px;"></i> التوصيات</h3>
+          <ul class="bullet-list">
+            <li><i class="fas fa-circle" style="color:#fbbf24;"></i> ربط المنصة بقاعدة بيانات حقيقية</li>
+            <li><i class="fas fa-circle" style="color:#fbbf24;"></i> إضافة نظام دفع إلكتروني آمن</li>
+            <li><i class="fas fa-circle" style="color:#fbbf24;"></i> تطوير تطبيق جوال لنظامي Android و iOS</li>
+            <li><i class="fas fa-circle" style="color:#fbbf24;"></i> تحسين المساعد الذكي بنماذج لغوية متقدمة</li>
+            <li><i class="fas fa-circle" style="color:#fbbf24;"></i> إضافة نظام إشعارات ذكي</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الهوية البصرية ===================== -->
+<section class="slide" id="identity">
+  <div class="bg-grid"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal"><span class="chapter-badge"><i class="fas fa-palette"></i> الهوية البصرية</span></div>
+    <div class="reveal stagger-1"><h2 class="slide-title">براند <span class="highlight">WardianPlus</span></h2></div>
+    <div class="reveal stagger-2"><div class="line-anim" style="margin:0 auto 40px;"></div></div>
+
+    <!-- اللوغو -->
+    <div class="reveal-scale stagger-2" style="margin-bottom:40px;">
+      <img src="https://z-cdn-media.chatglm.cn/files/7e852672-d955-4f05-a28d-0e8da5e27f03.jpg?auth_key=1877944747-cc3fdc46f99d4bb8a748c0d1f3420d1f-0-691447bcf88f9c394924a2f7a3f38089" alt="WardianPlus Logo" class="logo-img-large" style="border-radius:20px;" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';">
+      <div style="display:none;align-items:center;justify-content:center;width:160px;height:160px;border-radius:32px;background:var(--green);box-shadow:0 0 80px var(--green-glow);">
+        <span style="font-size:52px;font-weight:900;color:var(--black);">W+</span>
+      </div>
+    </div>
+
+    <div class="reveal stagger-3">
+      <p style="font-size:14px;color:var(--gray);margin-bottom:32px;">اللوغو يجمع بين اسم العلامة التجارية ورمز الإضافة — يدل على القيمة المضافة دائماً</p>
+    </div>
+
+    <!-- الألوان -->
+    <div class="reveal stagger-4" style="margin-bottom:32px;">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">لوحة الألوان</h3>
+      <div class="palette-row" style="max-width:700px;margin:0 auto;">
+        <div class="palette-swatch" style="background:#29DB80;color:var(--black);">#29DB80<br>أساسي</div>
+        <div class="palette-swatch" style="background:#1fb86a;color:var(--black);">#1FB86A<br>داكن</div>
+        <div class="palette-swatch" style="background:#0a0a0a;color:var(--white);border:1px solid var(--border);">#0A0A0A<br>أسود</div>
+        <div class="palette-swatch" style="background:#f5f5f5;color:var(--black);">#F5F5F5<br>أبيض</div>
+        <div class="palette-swatch" style="background:#888888;color:var(--black);">#888888<br>رمادي</div>
+      </div>
+    </div>
+
+    <!-- الخط -->
+    <div class="reveal stagger-5">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">الخط المستخدم</h3>
+      <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
+        <div class="card" style="text-align:center;min-width:200px;">
+          <p style="font-family:'Cairo';font-size:28px;font-weight:900;margin-bottom:4px;">Cairo</p>
+          <p style="font-size:12px;color:var(--gray);">العناوين الرئيسية</p>
+        </div>
+        <div class="card" style="text-align:center;min-width:200px;">
+          <p style="font-family:'Tajawal';font-size:28px;font-weight:300;margin-bottom:4px;">Tajawal</p>
+          <p style="font-size:12px;color:var(--gray);">النصوص والفقرات</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- أسلوب UI -->
+    <div class="reveal stagger-6" style="margin-top:32px;">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">أسلوب التصميم</h3>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <span class="tag tag-green">بطاقات مستديرة</span>
+        <span class="tag tag-green">ظلال ناعمة</span>
+        <span class="tag tag-green">بسيط</span>
+        <span class="tag tag-green">حديث</span>
+        <span class="tag tag-green">موثوق</span>
+        <span class="tag tag-green">ودود</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الخاتمة ===================== -->
+<section class="slide final-gradient" id="final">
+  <div class="bg-dots"></div>
+  <div id="finalParticles"></div>
+  <div class="bg-glow" style="background:var(--green);top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;opacity:0.1;"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="reveal">
+      <img src="https://z-cdn-media.chatglm.cn/files/7e852672-d955-4f05-a28d-0e8da5e27f03.jpg?auth_key=1877944747-cc3fdc46f99d4bb8a748c0d1f3420d1f-0-691447bcf88f9c394924a2f7a3f38089" alt="WardianPlus Logo" class="logo-img" style="margin-bottom:20px;border-radius:14px;" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';">
+      <div style="display:none;align-items:center;justify-content:center;width:80px;height:80px;border-radius:20px;background:var(--green);margin-bottom:20px;">
+        <span style="font-size:32px;font-weight:900;color:var(--black);">W+</span>
+      </div>
+    </div>
+    <div class="reveal stagger-1"><h2 class="slide-title" style="font-size:clamp(36px,6vw,64px);">شكراً <span class="highlight">لكم</span></h2></div>
+    <div class="reveal stagger-2"><p class="slide-subtitle" style="margin:0 auto;text-align:center;max-width:600px;">WardianPlus ليس مجرد مشروع تخرج — إنه بداية لمنصة عربية ذكية تغير طريقة اكتشاف العروض والخصومات</p></div>
+    <div class="reveal stagger-3"><div class="line-anim" style="margin:24px auto;"></div></div>
+
+    <!-- QR Code -->
+    <div class="reveal stagger-4" style="margin-top:20px;">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">
+        <i class="fas fa-qrcode" style="color:var(--green);margin-left:8px;"></i>
+        جرب المنصة الآن
+      </h3>
+      <div class="qr-wrapper">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://wardianplus-coder.github.io/wardian-plus/&bgcolor=ffffff&color=0a0a0a" alt="QR Code - WardianPlus">
+        <div class="qr-label">امسح الكود لفتح المنصة</div>
+        <div class="qr-link">wardianplus-coder.github.io/wardian-plus</div>
+      </div>
+    </div>
+
+    <div class="reveal stagger-5" style="display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:32px;">
+      <div style="text-align:center;">
+        <div class="stat-number" style="font-size:32px;">نموذج يعمل</div>
+        <div class="stat-label">جاهز للتطوير</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="stat-number" style="font-size:32px;">مستقبل واعد</div>
+        <div class="stat-label">قابل للتوسع</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="stat-number" style="font-size:32px;">تأثير حقيقي</div>
+        <div class="stat-label">يخدم المجتمع</div>
+      </div>
+    </div>
+
+    <!-- أسماء الفريق -->
+    <div class="reveal stagger-6">
+      <div class="team-section" style="max-width:500px;margin:24px auto 0;">
+        <div class="team-label">فريق العمل</div>
+        <div class="team-names">
+          <div class="team-name"><i class="fas fa-user-graduate"></i> أحمد جابر بدور</div>
+          <div class="team-name"><i class="fas fa-user-graduate"></i> ولاء حسين محمود</div>
+          <div class="team-name supervisor"><i class="fas fa-chalkboard-teacher"></i> إشراف: د. هاجر يحيي</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal stagger-7" style="margin-top:28px;">
+      <a href="#title" class="btn-primary"><i class="fas fa-arrow-up"></i> العودة للبداية</a>
+    </div>
+  </div>
+</section>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastText"></span>
+</div>
+
+<script>
+// ===== الجزيئات العائمة =====
+function createParticles(containerId, count) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'floating-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay = Math.random() * 8 + 's';
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+}
+createParticles('particles', 20);
+createParticles('finalParticles', 25);
+
+// ===== شريط التقدم =====
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = (scrollTop / docHeight) * 100;
+  progressBar.style.width = percent + '%';
+});
+
+// ===== التنقل الجانبي =====
+const sections = document.querySelectorAll('.slide');
+const navLinks = document.querySelectorAll('.side-nav a');
+
+function updateNav() {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 200;
+    if (window.scrollY >= sectionTop) {
+      current = section.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+}
+window.addEventListener('scroll', updateNav);
+
+// ===== كشف العناصر عند التمرير =====
+const observerOptions = {
+  root: null,
+  rootMargin: '0px 0px -80px 0px',
+  threshold: 0.1
+};
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal, .reveal-right, .reveal-left, .reveal-scale, .line-anim').forEach(el => {
+  revealObserver.observe(el);
+});
+
+// ===== عداد الأرقام =====
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      let current = 0;
+      const increment = target / 40;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = Math.floor(current);
+      }, 40);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+  counterObserver.observe(el);
+});
+
+// ===== أشرطة الاختبار =====
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      el.style.width = el.dataset.width + '%';
+      barObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.test-bar').forEach(el => {
+  barObserver.observe(el);
+});
+
+// ===== تأثير الكتابة =====
+const typingMessages = [
+  'مرحباً! أنا مساعد Wardian الذكي',
+  'كيف أقدر أساعدك اليوم؟',
+  'ابحث عن أفضل عروض اللابتوبات...',
+  'وجدت 5 عروض تصل خصوماتها لـ 40%!',
+  'هل تريد تطبيق الكود الآن؟'
+];
+
+let msgIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+const typingEl = document.getElementById('typingText');
+let typingStarted = false;
+
+function typeEffect() {
+  if (!typingEl) return;
+  const currentMsg = typingMessages[msgIndex];
+
+  if (!isDeleting) {
+    typingEl.innerHTML = currentMsg.substring(0, charIndex) + '<span class="typing-cursor"></span>';
+    charIndex++;
+    if (charIndex > currentMsg.length) {
+      isDeleting = true;
+      setTimeout(typeEffect, 2000);
+      return;
+    }
+    setTimeout(typeEffect, 50);
+  } else {
+    typingEl.innerHTML = currentMsg.substring(0, charIndex) + '<span class="typing-cursor"></span>';
+    charIndex--;
+    if (charIndex < 0) {
+      isDeleting = false;
+      charIndex = 0;
+      msgIndex = (msgIndex + 1) % typingMessages.length;
+      setTimeout(typeEffect, 500);
+      return;
+    }
+    setTimeout(typeEffect, 25);
+  }
+}
+
+// بدء التأثير عندما يظهر القسم
+const chatObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !typingStarted) {
+      typingStarted = true;
+      typeEffect();
+      chatObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const chatSection = document.getElementById('chatbot');
+if (chatSection) chatObserver.observe(chatSection);
+
+// ===== تحريك المخطط الانسيابي =====
+const flowObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const steps = entry.target.querySelectorAll('.flow-step');
+      steps.forEach((step, i) => {
+        setTimeout(() => {
+          step.classList.add('active');
+        }, i * 400);
+      });
+      flowObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+const flowContainer = document.getElementById('flowContainer');
+if (flowContainer) flowObserver.observe(flowContainer);
+
+// ===== Toast =====
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  toastText.textContent = text;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ===== سهم التمرير مع أنيميشن =====
+const scrollArrowBtn = document.getElementById('scrollArrowBtn');
+let isAnimating = false;
+
+scrollArrowBtn.addEventListener('click', function() {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  // تشغيل أنيميشن السهم
+  this.classList.add('clicked');
+
+  // بعد الأنيميشن، التمرير للصفحة التالية
+  setTimeout(() => {
+    const allSlides = document.querySelectorAll('.slide');
+    const currentScroll = window.scrollY;
+    let nextSlide = null;
+
+    for (let i = 0; i < allSlides.length; i++) {
+      const slideTop = allSlides[i].offsetTop;
+      if (slideTop > currentScroll + 100) {
+        nextSlide = allSlides[i];
+        break;
+      }
+    }
+
+    if (nextSlide) {
+      // إضافة كلاس لمنع التداخل أثناء التمرير
+      document.body.classList.add('is-scrolling');
+
+      nextSlide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // إزالة الكلاس بعد انتهاء التمرير
+      setTimeout(() => {
+        document.body.classList.remove('is-scrolling');
+      }, 1200);
+    }
+
+    // إعادة السهم لحالته الأصلية
+    this.classList.remove('clicked');
+    setTimeout(() => {
+      isAnimating = false;
+    }, 600);
+  }, 500);
+});
+
+// ===== دعم لوحة المفاتيح =====
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    scrollArrowBtn.click();
+  }
+});
+
+// ===== تأثير Parallax خفيف للخلفيات =====
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  document.querySelectorAll('.bg-glow').forEach(glow => {
+    const speed = 0.05;
+    const parentTop = glow.parentElement.offsetTop;
+    glow.style.transform = 'translateY(' + ((scrollY - parentTop) * speed) + 'px)';
+  });
+});
+
+// ===== منع التمرير الافتراضي عند النقر على الروابط =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      document.body.classList.add('is-scrolling');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => {
+        document.body.classList.remove('is-scrolling');
+      }, 1200);
+    }
+  });
+});
+
+// ===== إظهار العناصر الأولى عند التحميل =====
+window.addEventListener('load', () => {
+  const firstSlide = document.getElementById('title');
+  if (firstSlide) {
+    firstSlide.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
+      el.classList.add('active');
+    });
+  }
+  // Toast ترحيبي
+  setTimeout(() => showToast('مرحباً بكم في عرض WardianPlus'), 1500);
+});
+</script>
+</body>
+</html>
